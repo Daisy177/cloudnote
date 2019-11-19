@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.UserDao">
+	<sql id="col">
+		u_id AS id,
+		u_name AS name,
+		u_nickname AS nickname,
+		u_password AS password
+	</sql>
+	<insert id="add">
+		insert into cn_user(u_id,u_name,u_nickname,u_password) values(#{id},#{name},#{nickname},#{password})
+	</insert>
+	<update id="update">
+		update cn_user set u_password=#{password} where u_id=#{id}
+	</update>
+	<select id="findById" resultType="com.oracle.hrb.cloudnote.entity.User">
+		select<include refid="col"/> from cn_user where u_id = #{id}
+	</select>
+	<select id="findByName" resultType="com.oracle.hrb.cloudnote.entity.User">
+		select<include refid="col"/> from cn_user where u_name = #{name}
+	</select>
+	<select id="findByNickname" resultType="com.oracle.hrb.cloudnote.entity.User">
+		select<include refid="col"/> from cn_user where u_nickname = #{nickname}
+	</select>
+</mapper>

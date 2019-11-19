@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="url"
+                  value="jdbc:mysql://127.0.0.1:3306/java190905?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="root"></property>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="initialSize" value="10"></property>
+    </bean>
+    <!--SqlSessionFactory-->
+    <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+    </bean>
+    <!--mapper-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.oracle.hrb.cloudnote.dao"></property>
+    </bean>
+    <!--IOC扫描-->
+   <context:component-scan base-package="com.oracle.hrb"></context:component-scan>
+    <!--MVC扫描-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--AOP自动扫描扫描-->
+    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+    <!--注解事务管理-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
+<!--    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/user/login.do"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/user/reg.do"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/user/findPassword.do"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/user/updatePassword.do"></mvc:exclude-mapping>
+            <bean class="com.oracle.hrb.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+</beans>
