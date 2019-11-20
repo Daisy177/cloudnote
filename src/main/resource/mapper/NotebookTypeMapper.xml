@@ -4,7 +4,7 @@
 	<sql id="col">
 		t_id AS id,
 		t_name AS name,
-		t_desc AS desc
+		t_desc AS tDesc
 	</sql>
 	<select id="findNormal" resultType="com.oracle.hrb.cloudnote.entity.NotebookType">
 		select<include refid="col"/> from cn_notebook_type where t_name = 'normal'

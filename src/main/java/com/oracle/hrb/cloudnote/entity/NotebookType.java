@@ -3,7 +3,7 @@ package com.oracle.hrb.cloudnote.entity;
 public class NotebookType {
     private String id;
     private String name;
-    private String desc;
+    private String tDesc;
 
     public String getId() {
         return id;
@@ -21,12 +21,12 @@ public class NotebookType {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String gettDesc() {
+        return tDesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void settDesc(String tDesc) {
+        this.tDesc = tDesc;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class NotebookType {
         return "NotebookType{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
+                ", tDesc='" + tDesc + '\'' +
                 '}';
     }
 }

@@ -10,4 +10,6 @@ public interface NotebookDao {
     void delete(String id);
     List<Notebook> findByUserSpecial(String userId);
     List<Notebook> findByUserNormal(String userId);
+    //判断是否重名
+    Notebook findByName(Notebook notebook);
 }

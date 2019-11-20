@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.NotebookDao">
+	<sql id="col">
+		nb_id AS id,
+		nb_name AS name,
+		u_id AS userId,
+		nbt_id AS notebookTypeId,
+		nb_createtime AS createTime
+	</sql>
+	<insert id="add">
+		insert into cn_notebook(nb_id,nb_name,u_id,nbt_id,nb_createtime) values(#{id},#{name},#{userId},#{notebookTypeId},#{createTime})
+	</insert>
+	<update id="update">
+		update cn_notebook set nb_name=#{name} where nb_id=#{id}
+	</update>
+	<delete id="delete">
+		delete from cn_notebook where nb_id=#{id}
+	</delete>
+	<select id="findByUserSpecial" resultType="com.oracle.hrb.cloudnote.entity.Notebook">
+		select<include refid="col"/> from cn_notebook nb join cn_notebook_type nbt on nb.nbt_id=nbt.t_id where u_id=#{id} and nbt.t_name != 'normal'
+	</select>
+	<select id="findByUserNormal" resultType="com.oracle.hrb.cloudnote.entity.Notebook">
+		select<include refid="col"/> from cn_notebook nb join cn_notebook_type nbt on nb.nbt_id=nbt.t_id where u_id=#{id} and nbt.t_name = 'normal'
+	</select>
+	<select id="findByName" resultType="com.oracle.hrb.cloudnote.entity.Notebook">
+		select<include refid="col"/> from cn_notebook where u_id=#{userId} and nb_name = #{name}
+	</select>
+</mapper>

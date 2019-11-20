@@ -15,6 +15,8 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserDao userdao;
+    @Autowired
+    private NotebookService notebookService;
 
     @Transactional(readOnly = true)
     public Map<String,Object> login(String name,String password){
@@ -73,6 +75,8 @@ public class UserService {
         password= SHA256Util.sha256(password);
         u.setPassword(password);
         userdao.add(u);
+        //注册成功后初始化特殊笔记本
+        notebookService.initSpecialNotebook(u.getId());
         result.put("success",true);
         return result;
     }
