@@ -33,9 +33,11 @@ public class NotebookController {
         return result;
     }
     @PutMapping
-    public Object updateNotebook(){
-        System.out.println("修改笔记本");
-        return null;
+    public Object updateNotebook(Notebook notebook,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        notebook.setUserId(user.getId());
+        Map<String,Object> result=notebookService.updateNotebook(notebook);
+        return result;
     }
     @DeleteMapping
     public Object deleteNotebook(){

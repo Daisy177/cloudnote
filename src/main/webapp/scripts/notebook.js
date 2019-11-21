@@ -90,7 +90,43 @@ function addNoteBook(){
  * 重命名笔记本
  */
 function updateNoteBook(){
-	alert("重命名笔记本");
+    var name=$('#input_notebook_rename').val().trim();
+    var li=$('#first_side_right .contacts-list li .checked').parent();
+    var nb=li.data('notebook');
+    var id=nb.id;
+    //alert(name+","+id);
+    if(name==null||name.length==0){
+        sweetAlert("笔记本名称不能为空！", "出错了！","error");
+        return;
+    }
+    $.ajax({
+        url:"/notebook.do",
+        method:"put",
+        data:{name:name,id:id},
+        success:function (data) {
+            if (data['success']){
+                sweetAlert("修改笔记本成功", "恭喜你！","success");
+                //关闭弹出窗
+                $('.cancle').click();
+                //修改笔记本显示名称
+                li.html('<a class=\'unchecked\'>\n' +
+                        '<i class="fa fa-book" title="笔记本" rel="tooltip-bottom"></i>'
+                        + name+
+                        '<button type="button" class="btn btn-default btn-xs btn_position btn_delete"><i class="fa fa-times"></i></button>\n' +
+                        '</a>');
+                //将新笔记本数据重新绑定到节点
+                nb.name=name;
+                li.data('notebook',nb);
+                //console.log(li.html);
+                //被修改的笔记本为选中状态
+                li.click();
+            } else if (data['name_null']){
+                sweetAlert("笔记本名称不能为空！", "出错了！","error");
+            }else if (data['name_repeat']){
+                sweetAlert("笔记本名称已存在！", "出错了！","error");
+            }
+        }
+    })
 }
 
 /***
