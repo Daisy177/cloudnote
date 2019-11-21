@@ -87,11 +87,10 @@ function register() {
                         type: "success",
                         confirmButtonColor: "#6be557",
                         confirmButtonText: "确定",
-                        closeOnConfirm: true
+                        closeOnConfirm: false
                     },
                     function(){
-                        $("#zc").attr("class","sig sig_out");
-                        $("#dl").attr("class","log log_in");
+                        location.href="login.html"
                     });
             } else {
                 if (data['name_null']) {

@@ -17,6 +17,8 @@
 	<link rel="stylesheet" href="styles/prettify.css"/>
 	<!-- Ueditor编辑器CSS -->
 	<link href="styles/umeditor.min.css" type="text/css" rel="stylesheet">
+	<script src="scripts/common/sweetalert-dev.js"></script>
+	<link rel="stylesheet" href="scripts/common/sweetalert.css">
 </head>
 <body class="animated fadeIn">
 <header class="header">
@@ -74,12 +76,7 @@
 									<i class="fa fa-book" title="online" rel="tooltip-bottom"></i> 默认笔记本
 								</a>
 							</li>
-							<li class="online">
-								<a class='unchecked'>
-									<i class="fa fa-book" title="笔记本" rel="tooltip-bottom"></i> Spring
-									<button type="button" class="btn btn-default btn-xs btn_position btn_delete"><i class="fa fa-times"></i></button>
-								</a>
-							</li>
+
 						</ul>
 					</div>
 				</div>
@@ -325,8 +322,6 @@
 
                                     //获取笔记本列表
                                     get_nb_list();
-                                    //获取特殊笔记本列表
-                                    get_spnb_list();
                                     //实例化Ueditor编辑器
                                     var um = UM.getEditor('myEditor');
 								</script>
