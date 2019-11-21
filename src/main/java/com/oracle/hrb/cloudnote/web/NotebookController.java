@@ -40,8 +40,7 @@ public class NotebookController {
         return result;
     }
     @DeleteMapping
-    public Object deleteNotebook(){
-        System.out.println("删除笔记本");
-        return null;
+    public void deleteNotebook(String id){
+        notebookService.deleteNotebook(id);
     }
 }

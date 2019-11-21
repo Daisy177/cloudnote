@@ -6,6 +6,10 @@ function loadNoteBook(){
 		url:"/notebook.do",
 		method:"get",
 		success:function (data) {
+		    if(data=='fail'){
+		        location.href="login.html";
+		        return;
+            }
 			var special=data['special'];
             var normal=data['normal'];
             var list=$('#first_side_right .contacts-list');
@@ -59,6 +63,10 @@ function addNoteBook(){
 		method:"post",
 		data:{name:name},
 		success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
 			if (data['success']){
                 sweetAlert("添加笔记本成功", "恭喜你！","success");
                 var nb =data['notebook'];
@@ -76,7 +84,6 @@ function addNoteBook(){
                 $('#first_side_right .contacts-list li:first').next().data('notebook',nb);
                 //设置新加入笔记本为选中状态
                 $('#first_side_right .contacts-list li:first').next().click();
-
 			} else if (data['name_null']){
                 sweetAlert("笔记本名称不能为空！", "出错了！","error");
             }else if (data['name_repeat']){
@@ -104,6 +111,10 @@ function updateNoteBook(){
         method:"put",
         data:{name:name,id:id},
         success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
             if (data['success']){
                 sweetAlert("修改笔记本成功", "恭喜你！","success");
                 //关闭弹出窗
@@ -133,7 +144,23 @@ function updateNoteBook(){
  * 删除笔记本
  */
 function deleteNoteBook(){
-	alert("删除笔记本");
+    var li=$('#first_side_right .contacts-list li .checked').parent();
+    var id=li.data('notebook').id;
+    $.ajax({
+        url: "/notebook.do",
+        method: "delete",
+        data: {id: id},
+        success: function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            li.remove();
+            $('.close').click();
+            $('#first_side_right .contacts-list li:first').click();
+            sweetAlert("笔记本已经删除", "删除成功！", "success");
+        }
+    })
 }
 
 /**

@@ -36,14 +36,11 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
     <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
-<!--    <mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/user/login.do"></mvc:exclude-mapping>
-            <mvc:exclude-mapping path="/user/reg.do"></mvc:exclude-mapping>
-            <mvc:exclude-mapping path="/user/findPassword.do"></mvc:exclude-mapping>
-            <mvc:exclude-mapping path="/user/updatePassword.do"></mvc:exclude-mapping>
-            <bean class="com.oracle.hrb.interceptor.LoginInterceptor"></bean>
+            <mvc:exclude-mapping path="/user/*"></mvc:exclude-mapping>
+            <bean class="com.oracle.hrb.cloudnote.interceptor.LoginInterceptor"></bean>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 </beans>

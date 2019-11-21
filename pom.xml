@@ -143,6 +143,7 @@
       <artifactId>commons-email</artifactId>
       <version>1.5</version>
     </dependency>
+    <!-- jupiter-api -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
