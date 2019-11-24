@@ -1,43 +1,165 @@
+function formatDate() {
+
+}
 /***
  * 加载普通笔记
  */
 function getNormalNoteList(){
-	console.log("加载普通笔记");
+    var li=$('#first_side_right .contacts-list li .checked').parent();
+    var nb=li.data('notebook');
+    var notebookId=nb.id;
+    $.ajax({
+        url:"/note.do",
+        method:"get",
+        data:{notebookId:notebookId},
+        success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            $('#second_side_right .contacts-list').html('');
+            for (var i=0;i<data.length;i++) {
+                var note = data[i];
+                $('#second_side_right .contacts-list').append('<li class="online">\n' +
+                    '<a>\n' +
+                    '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title+note.modifyTime+'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
+                    '</a>\n' +
+                    '<div class="note_menu" tabindex=\'-1\'>\n' +
+                    '<dl>\n' +
+                    '<dt><button type="button" class="btn btn-default btn-xs btn_move" title=\'移动至...\'><i class="fa fa-random"></i></button></dt>\n' +
+                    '<dt><button type="button" class="btn btn-default btn-xs btn_share" title=\'分享\'><i class="fa fa-sitemap"></i></button></dt>\n' +
+                    '<dt><button type="button" class="btn btn-default btn-xs btn_delete" title=\'删除\'><i class="fa fa-times"></i></button></dt>\n' +
+                    '</dl>\n' +
+                    '</div>\n' +
+                    '</li>');
+                $('#second_side_right .contacts-list li:last').data('note',note);
+                $('#second_side_right .contacts-list li:first').click();
+            }
+        }
+    })
 }
 
 /***
  * 查询普通笔记内容
  */
 function getNoteDetail(){
-	console.log("查询普通笔记内容");
+    var note = $('#second_side_right .contacts-list li .checked').parent().data('note');
+    //alert(note.title);
+    $('#input_note_title').val(note.title);
+    um.setContent(note.body==null?'':note.body);
 }
 
 /***
  * 创建普通笔记
  */
 function createNormalNote(){
-	alert("创建普通笔记");
+    var li=$('#first_side_right .contacts-list li .checked').parent();
+    var nb=li.data('notebook');
+    var notebookId=nb.id;
+    var title=$('#input_note').val().trim();
+    $.ajax({
+        url:"/note.do",
+        method:"post",
+        data:{notebookId:notebookId,title:title},
+        success:function (note,data) {
+        	/*alert(note.title);*/
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            $('.cancle').click();
+            $('#second_side_right .contacts-list').prepend('<li class="online">\n' +
+                '<a class=\'checked\'>\n' +
+                '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title+'&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">('+formatDate(new Date(note.modifyTime),"yyyy/MM/dd hh:mm")+')</span><button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
+                '</a>\n' +
+                '<div class="note_menu" tabindex=\'-1\'>\n' +
+                '<dl>\n' +
+                '<dt><button type="button" class="btn btn-default btn-xs btn_move" title=\'移动至...\'><i class="fa fa-random"></i></button></dt>\n' +
+                '<dt><button type="button" class="btn btn-default btn-xs btn_share" title=\'分享\'><i class="fa fa-sitemap"></i></button></dt>\n' +
+                '<dt><button type="button" class="btn btn-default btn-xs btn_delete" title=\'删除\'><i class="fa fa-times"></i></button></dt>\n' +
+                '</dl>\n' +
+                '</div>\n' +
+                '</li>');
+            $('#second_side_right .contacts-list li:first').data('note',note);
+            $('#second_side_right .contacts-list li:first').click();
+            sweetAlert("笔记已经创建", "创建成功！", "success");
+        }
+    })
 }
 
 /***
  * 更新普通笔记
  */
 function updateNormalNote(){
-	alert("更新普通笔记");
+    var note= $('#second_side_right .contacts-list li .checked').parent().data('note');
+    var noteId=note.id;
+    var title=$('#input_note_title').val().trim();
+    var body=um.getContent();
+    $.ajax({
+        url:"/note.do",
+        method:"put",
+        data:{id:noteId,title:title,body:body},
+        success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            sweetAlert("笔记已经保存", "保存成功！", "success");
+            note.modifyTime=data.modifyTime;
+            note.title=title;
+            note.body=body;
+            $('#second_side_right .contacts-list li .checked').parent().data('note',note);
+            $('#second_side_right .contacts-list li .checked').html('<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title+'&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">('+formatDate(new Date(note.modifyTime),"yyyy/MM/dd hh:mm")+')</span><button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n');
+        }
+    })
 }
 
 /***
  * 删除普通笔记
  */
 function deleteNormalNote(){
-	alert("删除普通笔记");
+    var note= $('#second_side_right .contacts-list li .checked').parent().data('note');
+    var noteId=note.id;
+    var notebookId=$('#rollback_button').data("notebook").id;
+    $.ajax({
+        url:"/note/move.do",
+        method:"put",
+        data:{id:noteId,notebookId:notebookId},
+        success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            $('#second_side_right .contacts-list li .checked').parent().remove();
+            $('.close').click();
+            $('#second_side_right .contacts-list li:first').click();
+            sweetAlert("笔记已经删除", "删除成功！", "success");
+        }
+    })
 }
 
 /***
  * 移动笔记
  */
 function moveNote(){
-	alert("移动笔记");
+    var note= $('#second_side_right .contacts-list li .checked').parent().data('note');
+    var noteId=note.id;
+    var notebookId=$('#moveSelect').val();
+    $.ajax({
+        url:"/note/move.do",
+        method:"put",
+        data:{id:noteId,notebookId:notebookId},
+        success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            $('#second_side_right .contacts-list li .checked').parent().remove();
+            $('.close').click();
+            $('#second_side_right .contacts-list li:first').click();
+            sweetAlert("笔记已经移动", "移动成功！", "success");
+        }
+    })
 }
 
 /***

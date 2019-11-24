@@ -44,6 +44,7 @@ function loadNoteBook(){
                     '</li>');
                 $('#first_side_right .contacts-list li:last').data("notebook",nb);
             }
+            $('#first_side_right .contacts-list li:first').click();
         }
 	})
 }
@@ -55,7 +56,7 @@ function loadNoteBook(){
 function addNoteBook(){
 	var name=$('#input_notebook').val().trim();
 	if(name==null||name.length==0){
-        sweetAlert("笔记本名称不能为空！", "出错了！","error");
+        sweetAlert("笔记本名称不能为空！", "警告！","error");
         return;
 	}
 	$.ajax({
@@ -68,7 +69,7 @@ function addNoteBook(){
                 return;
             }
 			if (data['success']){
-                sweetAlert("添加笔记本成功", "恭喜你！","success");
+                sweetAlert("笔记本已经创建", "创建成功！","success");
                 var nb =data['notebook'];
                 //关闭弹出窗
                 $('.cancle').click();
@@ -85,9 +86,9 @@ function addNoteBook(){
                 //设置新加入笔记本为选中状态
                 $('#first_side_right .contacts-list li:first').next().click();
 			} else if (data['name_null']){
-                sweetAlert("笔记本名称不能为空！", "出错了！","error");
+                sweetAlert("笔记本名称不能为空！", "警告！","error");
             }else if (data['name_repeat']){
-                sweetAlert("笔记本名称已存在！", "出错了！","error");
+                sweetAlert("笔记本名称已存在！", "警告！","error");
             }
         }
 	})
@@ -103,7 +104,7 @@ function updateNoteBook(){
     var id=nb.id;
     //alert(name+","+id);
     if(name==null||name.length==0){
-        sweetAlert("笔记本名称不能为空！", "出错了！","error");
+        sweetAlert("笔记本名称不能为空！", "警告！","error");
         return;
     }
     $.ajax({
@@ -116,7 +117,7 @@ function updateNoteBook(){
                 return;
             }
             if (data['success']){
-                sweetAlert("修改笔记本成功", "恭喜你！","success");
+                sweetAlert("笔记本已经修改", "修改成功！","success");
                 //关闭弹出窗
                 $('.cancle').click();
                 //修改笔记本显示名称
@@ -132,9 +133,9 @@ function updateNoteBook(){
                 //被修改的笔记本为选中状态
                 li.click();
             } else if (data['name_null']){
-                sweetAlert("笔记本名称不能为空！", "出错了！","error");
+                sweetAlert("笔记本名称不能为空！", "警告！","error");
             }else if (data['name_repeat']){
-                sweetAlert("笔记本名称已存在！", "出错了！","error");
+                sweetAlert("笔记本名称已存在！", "警告！","error");
             }
         }
     })
@@ -168,4 +169,20 @@ function deleteNoteBook(){
  */
 function setNoteBookToSelect(){
 	console.log("将笔记本列表放置到select组件中");
+    $.ajax({
+        url:"/notebook/normal.do",
+        method:"get",
+        success:function (data) {
+            if(data=='fail'){
+                location.href="login.html";
+                return;
+            }
+            var defaultNotebook=$('#first_side_right .contacts-list li:first').data("notebook");
+            $('#moveSelect').append('<option value="'+defaultNotebook.id+'">默认笔记本</option>');
+            for (var i=0;i<data.length;i++){
+                var notebook=data[i];
+                $('#moveSelect').append('<option value="'+notebook.id+'">'+notebook.name+'</option>');
+            }
+        }
+    })
 }
