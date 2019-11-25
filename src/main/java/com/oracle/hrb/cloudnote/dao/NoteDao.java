@@ -11,4 +11,5 @@ public interface NoteDao {
     void deleteByNotebookId(String notebookId);
     void move(Note note);
     List<Note> findByNotebookId(String id);
+    Note findById(String id);
 }

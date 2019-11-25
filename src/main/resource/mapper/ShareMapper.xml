@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.ShareDao">
+	<sql id="col">
+		s_id AS id,
+		s_title AS title,
+		s_body AS body
+	</sql>
+    <insert id="add">
+		insert into cn_share(s_id,s_title,s_body) values(#{id},#{title},#{body})
+	</insert>
+	<select id="findLikeTitle" resultType="com.oracle.hrb.cloudnote.entity.Share">
+		select<include refid="col"/> from cn_share where s_title like concat('%',#{title},'%')
+	</select>
+
+</mapper>

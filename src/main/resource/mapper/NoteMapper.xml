@@ -26,4 +26,7 @@
 	<select id="findByNotebookId" resultType="com.oracle.hrb.cloudnote.entity.Note">
 		select<include refid="col"/> from cn_note where nb_id=#{notebookId}
 	</select>
+	<select id="findById" resultType="com.oracle.hrb.cloudnote.entity.Note">
+		select<include refid="col"/> from cn_note where n_id = #{id}
+	</select>
 </mapper>

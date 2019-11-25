@@ -168,7 +168,7 @@ function deleteNoteBook(){
  * 将笔记本列表放置到select组件中
  */
 function setNoteBookToSelect(){
-	console.log("将笔记本列表放置到select组件中");
+	//console.log("将笔记本列表放置到select组件中");
     $.ajax({
         url:"/notebook/normal.do",
         method:"get",
