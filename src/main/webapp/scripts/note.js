@@ -46,8 +46,10 @@ function getNormalNoteList(){
                     '</a>\n' +
                     '<div class="note_menu" tabindex=\'-1\'>\n' +
                     '<dl>\n' +
-                    '<dt><button type="button" class="btn btn-default btn-xs btn_move" title=\'移动至...\'><i class="fa fa-random"></i></button></dt>\n' +
-                    '<dt><button type="button" class="btn btn-default btn-xs btn_share" title=\'分享\'><i class="fa fa-sitemap"></i></button></dt>\n' +
+                    '<dt><button type="button" class="btn btn-default btn-xs btn_move" title=\'移动至...\'><i class="fa fa-random"></i></button></dt>\n'
+                    +
+                    (note.share !=0 ? '':'<dt><button type="button" class="btn btn-default btn-xs btn_share" title=\'分享\'><i class="fa fa-sitemap"></i></button></dt>\n')
+                    +
                     '<dt><button type="button" class="btn btn-default btn-xs btn_delete" title=\'删除\'><i class="fa fa-times"></i></button></dt>\n' +
                     '</dl>\n' +
                     '</div>\n' +
@@ -112,13 +114,14 @@ function createNormalNote(){
  */
 function updateNormalNote(){
     var note= $('#second_side_right .contacts-list li .checked').parent().data('note');
+    var share=note.share;
     var noteId=note.id;
     var title=$('#input_note_title').val().trim();
     var body=um.getContent();
     $.ajax({
         url:"/note.do",
         method:"put",
-        data:{id:noteId,title:title,body:body},
+        data:{id:noteId,title:title,body:body,share:share},
         success:function (data) {
             if(data=='fail'){
                 location.href="login.html";
@@ -170,7 +173,7 @@ function moveNote(li,notebookId){
 /***
  * 分享笔记
  */
-function createShareNote(){
+function createShareNote(e){
     var noteId = $('#second_side_right .contacts-list li .checked').parent().data('note').id;
     $.ajax({
         url:'/share.do',
@@ -182,6 +185,7 @@ function createShareNote(){
                 return;
             }
             if (data){
+                $(e).fadeOut(600);
                 $("footer div strong").text("分享成功").parent().fadeIn(100);
                 setTimeout(function () {
                     $("footer div").fadeOut(500);
@@ -287,17 +291,32 @@ function getShareNoteList(){
  * 查询分享笔记内容
  */
 function getShareNoteDetail(){
-	//alert("查询分享笔记内容");
-    var note=$('#sixth_side_right .contacts-list li .checked').parent().data('note');
-    $('#noput_note_title').html(note.title);
-    $('#note_body').html(note.body);
+    var share= $('#pc_part_6 .contacts-list li .checked').parent().data("share");
+    $('#noput_note_title').html(share.title);
+    $('#note_body').html(share.body);
 }
 
 /***
  * 收藏分享笔记
  */
 function likeShareNote(shareId,dom){
-	alert("收藏分享笔记");
+    var share= $('#pc_part_6 .contacts-list li .checked').parent().data("share");
+    var shareId = share.id;
+    var notebook = $('#like_button').data("notebook");
+    var notebookId = notebook.id;
+    $.ajax({
+        url:'/favorites.do',
+        method:'post',
+        data:{notebookId:notebookId,shareId:shareId},
+        success:function (data) {
+            $('.cancle').click();
+            if (data){
+                sweetAlert("笔记已收藏", "收藏成功！", "success");
+            } else {
+                sweetAlert("笔记已收藏，不能重复收藏!", "警告！", "error");
+            }
+        }
+    })
 }
 
 /***

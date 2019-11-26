@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.FavoritesDao">
+	<sql id="col">
+		f_id AS id,
+		nb_id AS notebookId,
+		s.s_id AS 'share.id',
+		s_title AS 'share.title',
+		s_body AS 'share.body'
+	</sql>
+	<sql id="join">
+		join cn_share s on s.s_id = f.s_id
+	</sql>
+	<delete id="delete">
+		delete from cn_favorites where f_id=#{id}
+	</delete>
+    <insert id="add">
+		insert into cn_favorites(f_id,nb_id,s_id) values(#{id},#{notebookId},#{share.id})
+	</insert>
+	<select id="findByNotebookId" resultType="com.oracle.hrb.cloudnote.entity.Favorites">
+		select<include refid="col"/> from cn_favorites f <include refid="join"/> where nb_id = #{id}
+	</select>
+	<select id="findOne" resultType="com.oracle.hrb.cloudnote.entity.Favorites">
+		select<include refid="col"/> from cn_favorites f <include refid="join"/> where nb_id = #{notebookId} and f.s_id = #{share.id}
+	</select>
+
+</mapper>

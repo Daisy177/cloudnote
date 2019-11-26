@@ -6,13 +6,14 @@
 		nb_id AS notebookId,
 		n_title AS title,
 		n_body AS body,
-		n_modify_time AS modifyTime
+		n_modify_time AS modifyTime,
+		n_share AS share
 	</sql>
 	<insert id="add">
 		insert into cn_note(n_id,nb_id,n_title,n_modify_time) values(#{id},#{notebookId},#{title},#{modifyTime})
 	</insert>
 	<update id="update">
-		update cn_note set n_title=#{title},n_body=#{body},n_modify_time=#{modifyTime} where n_id=#{id}
+		update cn_note set n_title=#{title},n_body=#{body},n_modify_time=#{modifyTime},n_share=#{share} where n_id=#{id}
 	</update>
 	<delete id="delete">
 		delete from cn_note where n_id=#{id}

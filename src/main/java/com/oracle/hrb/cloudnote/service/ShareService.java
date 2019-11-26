@@ -24,6 +24,8 @@ public class ShareService {
         if (note.getBody()==null||note.getBody().trim().length()==0){
             return false;
         }
+        note.setShare(1);
+        noteDao.update(note);
         Share share = new Share();
         share.setId(UUID.randomUUID().toString());
         share.setTitle(note.getTitle()+"---由"+userName+"分享");

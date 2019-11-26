@@ -172,8 +172,8 @@ $(function(){
 
     //----分享笔记
     $(document).on("click", "#second_side_right .btn_share", function() {
-        $(this).fadeOut(600);
-        createShareNote();
+        //$(this).fadeOut(600);
+        createShareNote(this);
     }),
 
 
