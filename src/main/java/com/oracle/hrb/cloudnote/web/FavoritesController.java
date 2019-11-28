@@ -3,10 +3,7 @@ package com.oracle.hrb.cloudnote.web;
 import com.oracle.hrb.cloudnote.entity.Favorites;
 import com.oracle.hrb.cloudnote.service.FavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +20,9 @@ public class FavoritesController {
     @GetMapping
     public List<Favorites> favoritesList(String notebookId){
         return favoritesService.favoritesList(notebookId);
+    }
+    @DeleteMapping
+    public void deleteFavorites(String id){
+        favoritesService.deleteFavorites(id);
     }
 }

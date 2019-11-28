@@ -33,4 +33,8 @@ public class FavoritesService {
     public List<Favorites> favoritesList(String notenookId){
         return favoritesDao.findByNotebookId(notenookId);
     }
+    @Transactional
+    public void deleteFavorites(String id){
+        favoritesDao.delete(id);
+    }
 }

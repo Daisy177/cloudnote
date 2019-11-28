@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.ActivityDao">
+	<sql id="col">
+		a_id AS id,
+		a_title AS title,
+		a_body AS body,
+		a_end_time AS endTime
+    </sql>
+	<select id="findAll" resultType="com.oracle.hrb.cloudnote.entity.Activity">
+		select<include refid="col"/> from cn_activity
+	</select>
+
+</mapper>
