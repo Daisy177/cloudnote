@@ -369,12 +369,12 @@ $(function(){
 
         //----顶笔记（活动页面）
         $(document).on("click", "#first_action .btn_up", function() {
-            up();
+            up(this);
         }),
 
         //----踩笔记（活动页面）
         $(document).on("click", "#first_action .btn_down", function() {
-            down();
+            down(this);
         });
 
 });

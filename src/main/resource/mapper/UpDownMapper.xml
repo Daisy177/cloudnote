@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.UpDownDao">
+	<sql id="col">
+		ud_id AS id,
+		na_id AS activityNoteId,
+		u_id AS userId,
+		ud_state AS state
+	</sql>
+    <insert id="add">
+		insert into cn_up_down(ud_id,na_id,u_id,ud_state) values(#{id},#{activityNoteId},#{userId},#{state})
+	</insert>
+	<update id="update">
+		update cn_up_down set ud_state=#{state} where ud_id=#{id}
+	</update>
+	<select id="findByActivityNoteIdAndUserId" resultType="com.oracle.hrb.cloudnote.entity.UpDown">
+		select<include refid="col"/> from cn_up_down where na_id=#{activityNoteId} and u_id =#{userId}
+	</select>
+	<select id="countState" resultType="java.lang.Integer">
+		select count(*) from cn_up_down where na_id=#{activityNoteId} and ud_state =#{state}
+	</select>
+</mapper>
