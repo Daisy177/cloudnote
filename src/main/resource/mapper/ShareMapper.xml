@@ -4,13 +4,16 @@
 	<sql id="col">
 		s_id AS id,
 		s_title AS title,
-		s_body AS body
+		s_body AS body,
+		n_id AS noteId
 	</sql>
     <insert id="add">
-		insert into cn_share(s_id,s_title,s_body) values(#{id},#{title},#{body})
+		insert into cn_share(s_id,s_title,s_body,n_id) values(#{id},#{title},#{body},#{noteId})
 	</insert>
 	<select id="findLikeTitle" resultType="com.oracle.hrb.cloudnote.entity.Share">
 		select<include refid="col"/> from cn_share where s_title like concat('%',#{title},'%')
 	</select>
-
+	<select id="findByNoteId" resultType="com.oracle.hrb.cloudnote.entity.Share">
+		select<include refid="col"/> from cn_share where n_id=#{noteId}
+	</select>
 </mapper>

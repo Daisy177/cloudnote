@@ -4,6 +4,15 @@ public class Share {
     private String id;
     private String title;
     private String body;
+    private String noteId;
+
+    public String getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(String noteId) {
+        this.noteId = noteId;
+    }
 
     public String getId() {
         return id;

@@ -30,8 +30,13 @@ public class ShareService {
         share.setId(UUID.randomUUID().toString());
         share.setTitle(note.getTitle()+"---由"+userName+"分享");
         share.setBody(note.getBody());
+        share.setNoteId(noteId);
         shareDao.add(share);
         return true;
+    }
+    @Transactional
+    public Share findByNoteId(String noteId){
+        return shareDao.findByNoteId(noteId);
     }
     @Transactional
     public List<Share> shareList(String title){

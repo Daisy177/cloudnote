@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oracle.hrb.cloudnote.dao.ActivityNoteDao">
+	<sql id="col">
+		na_id AS id,
+		a_id AS activityId,
+		s.s_id AS 'share.id',
+		s.s_title AS 'share.title',
+		s.s_body AS 'share.body'
+	</sql>
+	<sql id="join">
+		join cn_share s on na.s_id=s.s_id
+	</sql>
+	<insert id="add">
+		insert into cn_note_activity(na_id,a_id,s_id) values(#{id},#{activityId},#{share.id})
+	</insert>
+	<select id="findByActivityId" resultType="com.oracle.hrb.cloudnote.entity.ActivityNote">
+		select<include refid="col"/> from cn_note_activity na <include refid="join"/> where a_id=#{activityId}
+	</select>
+	<select id="findByActivityIdAndShareId" resultType="com.oracle.hrb.cloudnote.entity.ActivityNote">
+		select<include refid="col"/> from cn_note_activity na <include refid="join"/> where a_id=#{activityId} and na.s_id=#{share.id}
+	</select>
+</mapper>

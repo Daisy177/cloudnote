@@ -384,7 +384,7 @@ function deleteLikeNote(noteId,dom){
  * 加载本用户参加活动笔记列表
  */
 function getNoteActivityList(noteBookId){
-	alert("加载本用户参加活动笔记列表");
+    console.log("加载本用户参加活动笔记列表");
 }
 
 /***
